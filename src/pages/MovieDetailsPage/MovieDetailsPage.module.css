@@ -1,36 +1,115 @@
+/* MovieDetailsPage.module.css */
+
+/* Головний контейнер сторінки деталей фільму */
 .movie-details-container {
-  margin: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.movie-details-container h1 {
+/* Заголовок фільму */
+h1 {
   font-size: 24px;
   margin-bottom: 10px;
 }
 
-.movie-details-container p {
-  margin-bottom: 10px;
-}
-
-.movie-details-container .movie-poster {
-  width: 200px;
+/* Зображення постера фільму */
+.movie-poster {
+  max-width: 100%;
   height: auto;
   margin-bottom: 20px;
 }
 
-.movie-details-container .cast-list {
+/* Опис фільму */
+p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+/* Жанр фільму */
+.genre-label {
+  font-weight: bold;
+}
+
+/* Країна виробництва */
+.country-label {
+  font-weight: bold;
+}
+
+/* Список акторів */
+.cast-list {
   list-style: none;
   padding: 0;
 }
 
-.movie-details-container .cast-list-item {
+/* Один елемент списку акторів */
+.cast-list-item {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.movie-details-container .actor-image {
-  width: 50px;
-  height: auto;
+/* Зображення актора */
+.actor-image {
+  width:auto;
+  height: 50px;
+  border-radius: 10%;
   margin-right: 10px;
-  border-radius: 20%;
+}
+
+/* Ім'я актора */
+.actor-name {
+  font-size: 16px;
+}
+
+/* Кнопка для показу всіх акторів */
+.show-all-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.show-all-button:hover {
+  background-color: #0056b3;
+}
+
+/* Контейнер для оглядів фільму */
+.reviews-container {
+  margin-top: 30px;
+}
+
+/* Заголовок блоку оглядів */
+.reviews-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Список оглядів */
+.reviews-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Один елемент списку оглядів */
+.review-item {
+  margin-bottom: 20px;
+}
+
+/* Ім'я автора огляду */
+.author-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Огляд фільму */
+.review-content {
+  font-size: 16px;
+  line-height: 1.5;
 }

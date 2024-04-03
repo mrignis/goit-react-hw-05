@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Routes, Route } from "react-router-dom";
 import axios from "axios";
-import styles from "./MovieDetailsPage.module.css"; // Імпорт CSS для стилізації
+import styles from "./MovieDetailsPage.module.css";
+import MovieReviews from "../../components/MovieReview/MovieReviews";
+import MovieCastPage from "../../components/MovieCast/MovieCast"; // Імпорт компоненту MovieCastPage
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -9,18 +11,21 @@ function MovieDetailsPage() {
   const [cast, setCast] = useState([]);
   const [releaseYear, setReleaseYear] = useState("");
   const [showAllCast, setShowAllCast] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [showCast, setShowCast] = useState(false);
+  const [showReviews, setShowReviews] = useState(false);
 
   useEffect(() => {
     const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
     const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
     const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+    const reviewsUrl = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
     const options = {
       params: {
         api_key: apiKey,
       },
     };
 
-    // Запит для отримання детальної інформації про фільм
     axios
       .get(movieDetailsUrl, options)
       .then((response) => {
@@ -31,7 +36,6 @@ function MovieDetailsPage() {
         console.error("Error fetching movie details:", error);
       });
 
-    // Запит для отримання списку акторів
     axios
       .get(castUrl, options)
       .then((response) => {
@@ -40,15 +44,35 @@ function MovieDetailsPage() {
       .catch((error) => {
         console.error("Error fetching cast:", error);
       });
+
+    axios
+      .get(reviewsUrl, options)
+      .then((response) => {
+        setReviews(response.data.results);
+      })
+      .catch((error) => {
+        console.error("Error fetching reviews:", error);
+      });
   }, [movieId]);
 
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
 
-  // Функція для зміни стану показу всіх акторів
   const toggleShowAllCast = () => {
     setShowAllCast(!showAllCast);
+  };
+
+  const hideAllCast = () => {
+    setShowAllCast(false);
+  };
+
+  const toggleShowCast = () => {
+    setShowCast(!showCast);
+  };
+
+  const toggleShowReviews = () => {
+    setShowReviews(!showReviews);
   };
 
   return (
@@ -69,30 +93,53 @@ function MovieDetailsPage() {
           .join(", ")}
       </p>
       <h2>Cast</h2>
-      <ul className={styles["cast-list"]}>
-        {showAllCast
-          ? cast.map((actor) => (
-              <li key={actor.id} className={styles["cast-list-item"]}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                  alt={actor.name}
-                  className={styles["actor-image"]}
-                />
-                <p>{actor.name}</p>
-              </li>
-            ))
-          : cast.slice(0, 5).map((actor) => (
-              <li key={actor.id} className={styles["cast-list-item"]}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                  alt={actor.name}
-                  className={styles["actor-image"]}
-                />
-                <p>{actor.name}</p>
-              </li>
-            ))}
-      </ul>
-      {!showAllCast && <button onClick={toggleShowAllCast}>Show All</button>}
+      {showCast && (
+        <ul className={styles["cast-list"]}>
+          {showAllCast
+            ? cast.map((actor) => (
+                <li key={actor.id} className={styles["cast-list-item"]}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
+                    alt={actor.name}
+                    className={styles["actor-image"]}
+                  />
+                  <p>{actor.name}</p>
+                </li>
+              ))
+            : cast.slice(0, 5).map((actor) => (
+                <li key={actor.id} className={styles["cast-list-item"]}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
+                    alt={actor.name}
+                    className={styles["actor-image"]}
+                  />
+                  <p>{actor.name}</p>
+                </li>
+              ))}
+        </ul>
+      )}
+      <button onClick={toggleShowCast}>
+        {showCast ? "Hide Cast" : "Show Cast"}
+      </button>
+      <h2>Reviews</h2>
+      <div className={styles["reviews"]}>
+        {showReviews && <MovieReviews reviews={reviews} />}
+      </div>
+      <button onClick={toggleShowReviews}>
+        {showReviews ? "Hide Reviews" : "Show Reviews"}
+      </button>
+
+      {/* Додайте маршрути для сторінок касту та відгуків */}
+      <Routes>
+        <Route
+          path="/movies/:movieId/cast"
+          element={<MovieCastPage cast={cast} />}
+        />
+        <Route
+          path="/movies/:movieId/reviews"
+          element={<MovieReviews reviews={reviews} />}
+        />
+      </Routes>
     </div>
   );
 }

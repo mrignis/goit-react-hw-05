@@ -1,6 +1,6 @@
-// src/pages/MoviesPage.jsx
 import React, { useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
+import axios from "axios";
 
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,7 +12,20 @@ function MoviesPage() {
 
   const handleSearchSubmit = async (event) => {
     event.preventDefault();
-    // Ваш код для пошуку фільмів за searchQuery
+    try {
+      const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
+      const searchUrl = `https://api.themoviedb.org/3/search/movie`;
+      const options = {
+        params: {
+          api_key: apiKey,
+          query: searchQuery,
+        },
+      };
+      const response = await axios.get(searchUrl, options);
+      setSearchResults(response.data.results);
+    } catch (error) {
+      console.error("Error searching movies:", error);
+    }
   };
 
   return (
