@@ -1,6 +1,6 @@
 // src/pages/MoviesPage.jsx
 import React, { useState } from "react";
-import MovieList from "../components/MovieList";
+import MovieList from "../../components/MovieList/MovieList";
 
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");

@@ -1,15 +1,20 @@
-// src/components/Navigation.jsx
+import React from "react";
 import { NavLink } from "react-router-dom";
+import styles from "./Navigation.module.css"; // Підключаємо стилі
 
 function Navigation() {
   return (
     <nav>
-      <ul>
-        <li>
-          <NavLink to="/">Home</NavLink>
+      <ul className={styles.navigationList}>
+        <li className={styles.navigationItem}>
+          <NavLink exact="true" to="/" activeclassname={styles.active}>
+            Home
+          </NavLink>
         </li>
-        <li>
-          <NavLink to="/movies">Movies</NavLink>
+        <li className={styles.navigationItem}>
+          <NavLink to="/movies" activeclassname={styles.active}>
+            Movies
+          </NavLink>
         </li>
       </ul>
     </nav>

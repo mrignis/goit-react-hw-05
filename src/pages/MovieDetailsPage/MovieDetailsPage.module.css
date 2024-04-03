@@ -1,4 +1,36 @@
-/* src/pages/MoviesPage/MoviesPage.module.css */
-.container {
+.movie-details-container {
   margin: 20px;
+}
+
+.movie-details-container h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.movie-details-container p {
+  margin-bottom: 10px;
+}
+
+.movie-details-container .movie-poster {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.movie-details-container .cast-list {
+  list-style: none;
+  padding: 0;
+}
+
+.movie-details-container .cast-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.movie-details-container .actor-image {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+  border-radius: 20%;
 }

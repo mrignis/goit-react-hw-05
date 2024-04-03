@@ -1,4 +1,8 @@
-/* src/pages/HomePage/HomePage.module.css */
-.container {
-    margin: 20px;
+.home-page-container {
+    padding: 20px;
+}
+
+.home-page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
 }

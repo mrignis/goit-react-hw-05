@@ -1,8 +1,10 @@
-// src/App.jsx
-import { lazy, Suspense } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+// src/App.js
+import React, { useEffect, Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
-
+import axios from "axios";
+import "./App.css"; // Додано імпорт для файлу CSS
 import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./pages/HomePage/HomePage";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
@@ -11,18 +13,41 @@ import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const history = createBrowserHistory();
 
+async function getTrendingMovies(apiKey) {
+  try {
+    const url = "https://api.themoviedb.org/3/trending/movie/week";
+    const options = {
+      params: {
+        api_key: apiKey,
+      },
+    };
+    const response = await axios.get(url, options);
+    return response.data.results;
+  } catch (error) {
+    console.error("Error fetching trending movies:", error);
+    return [];
+  }
+}
+
 function App() {
+  useEffect(() => {
+    const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
+    getTrendingMovies(apiKey).then((movies) => {
+      console.log("Trending movies:", movies);
+    });
+  }, []);
+
   return (
     <Router history={history}>
       <div>
         <Navigation />
         <Suspense fallback={<div>Loading...</div>}>
-          <Switch>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/movies" exact component={MoviesPage} />
-            <Route path="/movies/:movieId" component={MovieDetailsPage} />
-            <Route component={NotFoundPage} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/movies" element={<MoviesPage />} />
+            <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </Suspense>
       </div>
     </Router>

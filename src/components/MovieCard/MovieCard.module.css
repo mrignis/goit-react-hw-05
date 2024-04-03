@@ -1,0 +1,43 @@
+.movies-container {
+    padding: 20px;
+}
+
+.movie-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 20px;
+}
+
+.movie-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.movie-poster {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.movie-info {
+    padding: 16px;
+}
+
+.movie-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.movie-release-date {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.movie-overview {
+    font-size: 14px;
+    color: #666;
+}
