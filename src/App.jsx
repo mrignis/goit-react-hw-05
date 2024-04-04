@@ -1,14 +1,15 @@
-import React, { useEffect, Suspense, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState, Suspense } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import axios from "axios";
-import "./App.css"; // Додано імпорт для файлу CSS
+import "./App.css"; // Імпортуємо файл стилів CSS
 import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./pages/HomePage/HomePage";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
-import MovieCastPage from "./components/MovieCast/MovieCast"; // Змінено шлях для імпорту MovieCastPage
+import MovieCastPage from "./components/MovieCast/MovieCast"; // Імпортуємо компонент MovieCastPage
+import MovieReviews from "./components/MovieReview/MovieReviews"; // Імпортуємо компонент MovieReviews
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const history = createBrowserHistory();
@@ -24,18 +25,19 @@ async function getTrendingMovies(apiKey) {
     const response = await axios.get(url, options);
     return response.data.results;
   } catch (error) {
-    console.error("Error fetching trending movies:", error);
+    console.error("Помилка при завантаженні популярних фільмів:", error);
     return [];
   }
 }
 
 function App() {
   const [cast, setCast] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
     getTrendingMovies(apiKey).then((movies) => {
-      console.log("Trending movies:", movies);
+      console.log("Популярні фільми:", movies);
     });
   }, []);
 
@@ -47,14 +49,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/movies" element={<MoviesPage />} />
-            <Route
-              path="/movies/:movieId"
-              element={<MovieDetailsPage setCast={setCast} />}
-            />
-            <Route
-              path="/movies/:movieId/cast"
-              element={<MovieCastPage cast={cast} />}
-            />
+            <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>

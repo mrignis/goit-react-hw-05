@@ -1,4 +1,61 @@
-/* src/pages/MoviesPage/MoviesPage.module.css */
 .container {
-    margin: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.searchButton {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #efea81;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.movie-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.movie-item {
+  margin-bottom: 20px;
+}
+
+.movie-title {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.movie-overview {
+  font-size: 16px;
+  color: #555;
+}
+
+.movie-poster {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
 }

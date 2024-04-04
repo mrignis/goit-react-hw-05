@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Routes, Route } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import styles from "./MovieDetailsPage.module.css";
 import MovieReviews from "../../components/MovieReview/MovieReviews";
-import MovieCastPage from "../../components/MovieCast/MovieCast"; // Імпорт компоненту MovieCastPage
+import MovieCastPage from "../../components/MovieCast/MovieCast";
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -63,10 +63,6 @@ function MovieDetailsPage() {
     setShowAllCast(!showAllCast);
   };
 
-  const hideAllCast = () => {
-    setShowAllCast(false);
-  };
-
   const toggleShowCast = () => {
     setShowCast(!showCast);
   };
@@ -118,28 +114,16 @@ function MovieDetailsPage() {
               ))}
         </ul>
       )}
-      <button onClick={toggleShowCast}>
+      <Link to={`/movies/${movieId}/cast`} onClick={toggleShowCast}>
         {showCast ? "Hide Cast" : "Show Cast"}
-      </button>
+      </Link>
       <h2>Reviews</h2>
       <div className={styles["reviews"]}>
         {showReviews && <MovieReviews reviews={reviews} />}
       </div>
-      <button onClick={toggleShowReviews}>
+      <Link to={`/movies/${movieId}/reviews`} onClick={toggleShowReviews}>
         {showReviews ? "Hide Reviews" : "Show Reviews"}
-      </button>
-
-      {/* Додайте маршрути для сторінок касту та відгуків */}
-      <Routes>
-        <Route
-          path="/movies/:movieId/cast"
-          element={<MovieCastPage cast={cast} />}
-        />
-        <Route
-          path="/movies/:movieId/reviews"
-          element={<MovieReviews reviews={reviews} />}
-        />
-      </Routes>
+      </Link>
     </div>
   );
 }

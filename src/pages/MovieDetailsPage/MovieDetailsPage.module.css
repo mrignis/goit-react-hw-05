@@ -1,115 +1,33 @@
-/* MovieDetailsPage.module.css */
-
-/* Головний контейнер сторінки деталей фільму */
 .movie-details-container {
-  font-family: Arial, sans-serif;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
 }
 
-/* Заголовок фільму */
-h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-/* Зображення постера фільму */
 .movie-poster {
-  max-width: 100%;
+  width: 200px;
   height: auto;
+  border-radius: 8px;
   margin-bottom: 20px;
 }
 
-/* Опис фільму */
-p {
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
-/* Жанр фільму */
-.genre-label {
-  font-weight: bold;
-}
-
-/* Країна виробництва */
-.country-label {
-  font-weight: bold;
-}
-
-/* Список акторів */
 .cast-list {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-/* Один елемент списку акторів */
 .cast-list-item {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-/* Зображення актора */
 .actor-image {
-  width:auto;
-  height: 50px;
+  width: 70px;
+  height: auto;
   border-radius: 10%;
   margin-right: 10px;
-}
-
-/* Ім'я актора */
-.actor-name {
-  font-size: 16px;
-}
-
-/* Кнопка для показу всіх акторів */
-.show-all-button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.show-all-button:hover {
-  background-color: #0056b3;
-}
-
-/* Контейнер для оглядів фільму */
-.reviews-container {
-  margin-top: 30px;
-}
-
-/* Заголовок блоку оглядів */
-.reviews-heading {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Список оглядів */
-.reviews-list {
-  list-style: none;
-  padding: 0;
-}
-
-/* Один елемент списку оглядів */
-.review-item {
-  margin-bottom: 20px;
-}
-
-/* Ім'я автора огляду */
-.author-name {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-/* Огляд фільму */
-.review-content {
-  font-size: 16px;
-  line-height: 1.5;
 }
