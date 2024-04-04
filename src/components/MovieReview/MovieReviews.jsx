@@ -1,14 +1,44 @@
-// src/components/MovieReviews/MovieReviews.jsx
-import React from "react";
-import styles from "./MovieReviews.module.css";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const MovieReviews = ({ reviews }) => {
+function MovieReviewsPage() {
+  const { movieId } = useParams();
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${movieId}/reviews`,
+          {
+            params: {
+              api_key: "f81eddcfa1fa92ba0e5bfe802029fb78",
+            },
+          }
+        );
+        setReviews(response.data.results);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, [movieId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
-    <div className={styles.container}>
+    <div>
       <h2>Movie Reviews</h2>
-      <ul className={styles.reviewsList}>
-        {reviews.map((review) => (
-          <li key={review.id} className={styles.reviewItem}>
+      <ul>
+        {reviews.map((review, index) => (
+          <li key={index}>
             <h3>{review.author}</h3>
             <p>{review.content}</p>
           </li>
@@ -16,6 +46,6 @@ const MovieReviews = ({ reviews }) => {
       </ul>
     </div>
   );
-};
+}
 
-export default MovieReviews;
+export default MovieReviewsPage;

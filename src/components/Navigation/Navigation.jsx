@@ -7,12 +7,12 @@ function Navigation() {
     <nav className={styles.navigation}>
       <ul className={styles.navigationList}>
         <li className={styles.navigationItem}>
-          <NavLink exact to="/" activeClassName={styles.active}>
+          <NavLink to="/" activeclassname={styles.active}>
             Home
           </NavLink>
         </li>
         <li className={styles.navigationItem}>
-          <NavLink to="/movies" activeClassName={styles.active}>
+          <NavLink to="/movies" activeclassname={styles.active}>
             Movies
           </NavLink>
         </li>

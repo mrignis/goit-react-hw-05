@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Suspense } from "react";
-import { Route, Routes, useParams } from "react-router-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes } from "react-router-dom"; // Видалено BrowserRouter з імпорту
 import { createBrowserHistory } from "history";
 import axios from "axios";
 import "./App.css"; // Імпортуємо файл стилів CSS
@@ -8,8 +7,6 @@ import Navigation from "./components/Navigation/Navigation";
 import HomePage from "./pages/HomePage/HomePage";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
-import MovieCastPage from "./components/MovieCast/MovieCast"; // Імпортуємо компонент MovieCastPage
-import MovieReviews from "./components/MovieReview/MovieReviews"; // Імпортуємо компонент MovieReviews
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 const history = createBrowserHistory();
@@ -31,9 +28,6 @@ async function getTrendingMovies(apiKey) {
 }
 
 function App() {
-  const [cast, setCast] = useState([]);
-  const [reviews, setReviews] = useState([]);
-
   useEffect(() => {
     const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
     getTrendingMovies(apiKey).then((movies) => {
@@ -42,19 +36,17 @@ function App() {
   }, []);
 
   return (
-    <Router history={history}>
-      <div>
-        <Navigation />
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/movies" element={<MoviesPage />} />
-            <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
-      </div>
-    </Router>
+    <div>
+      <Navigation />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/movies" element={<MoviesPage />} />
+          <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </div>
   );
 }
 

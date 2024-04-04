@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useParams, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import styles from "./MovieDetailsPage.module.css";
 import MovieReviews from "../../components/MovieReview/MovieReviews";
@@ -14,6 +14,8 @@ function MovieDetailsPage() {
   const [reviews, setReviews] = useState([]);
   const [showCast, setShowCast] = useState(false);
   const [showReviews, setShowReviews] = useState(false);
+  const location = useLocation();
+  const fromRef = useRef(location.state ? location.state.from : null);
 
   useEffect(() => {
     const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
@@ -73,6 +75,7 @@ function MovieDetailsPage() {
 
   return (
     <div className={styles["movie-details-container"]}>
+      {fromRef.current && <Link to={fromRef.current}>Back</Link>}
       <h1>{movieDetails.title}</h1>
       <img
         src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
