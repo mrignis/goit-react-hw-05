@@ -4,11 +4,15 @@ import { createBrowserHistory } from "history";
 import axios from "axios";
 import "./App.css"; // Імпортуємо файл стилів CSS
 import Navigation from "./components/Navigation/Navigation";
-import HomePage from "./pages/HomePage/HomePage";
-import MoviesPage from "./pages/MoviesPage/MoviesPage";
-import MovieDetailsPage from "./pages/MovieDetailsPage/MovieDetailsPage";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+const HomePage = React.lazy(() => import("./pages/HomePage/HomePage"));
+const MoviesPage = React.lazy(() => import("./pages/MoviesPage/MoviesPage"));
+const MovieDetailsPage = React.lazy(() =>
+  import("./pages/MovieDetailsPage/MovieDetailsPage")
+);
+const NotFoundPage = React.lazy(() =>
+  import("./pages/NotFoundPage/NotFoundPage")
+);
 const history = createBrowserHistory();
 
 async function getTrendingMovies(apiKey) {
