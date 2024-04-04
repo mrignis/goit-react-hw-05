@@ -4,15 +4,15 @@ import styles from "./Navigation.module.css"; // Підключаємо стил
 
 function Navigation() {
   return (
-    <nav>
+    <nav className={styles.navigation}>
       <ul className={styles.navigationList}>
         <li className={styles.navigationItem}>
-          <NavLink exact="true" to="/" activeclassname={styles.active}>
+          <NavLink exact to="/" activeClassName={styles.active}>
             Home
           </NavLink>
         </li>
         <li className={styles.navigationItem}>
-          <NavLink to="/movies" activeclassname={styles.active}>
+          <NavLink to="/movies" activeClassName={styles.active}>
             Movies
           </NavLink>
         </li>
