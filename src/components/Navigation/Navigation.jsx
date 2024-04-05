@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom"; // Заміна NavLink на Link
 import styles from "./Navigation.module.css"; // Підключаємо стилі
 
 function Navigation() {
@@ -7,14 +7,18 @@ function Navigation() {
     <nav className={styles.navigation}>
       <ul className={styles.navigationList}>
         <li className={styles.navigationItem}>
-          <NavLink to="/" activeclassname={styles.active}>
+          <Link to="/" className={styles.link} aria-current="page">
+            {" "}
+            {/* Замінено на Link */}
             Home
-          </NavLink>
+          </Link>
         </li>
         <li className={styles.navigationItem}>
-          <NavLink to="/movies" activeclassname={styles.active}>
+          <Link to="/movies" className={styles.link}>
+            {" "}
+            {/* Замінено на Link */}
             Movies
-          </NavLink>
+          </Link>
         </li>
       </ul>
     </nav>

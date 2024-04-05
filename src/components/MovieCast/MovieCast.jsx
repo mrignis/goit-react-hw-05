@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom"; // Додайте імпорт useParams
 import styles from "./MovieCast.module.css";
 
-const MovieCast = ({ movieId }) => {
+const MovieCast = () => {
+  const { movieId } = useParams(); // Отримання movieId через useParams
   const [cast, setCast] = useState([]);
 
   useEffect(() => {

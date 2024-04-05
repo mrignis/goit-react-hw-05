@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
-
 import "./HomePage.module.css"; // Імпортуємо CSS файл для стилізації
 
 function HomePage() {

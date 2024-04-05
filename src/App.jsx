@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Suspense } from "react";
-import { Route, Routes } from "react-router-dom"; // Видалено BrowserRouter з імпорту
+// App.jsx
+import React, { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import axios from "axios";
-import "./App.css"; // Імпортуємо файл стилів CSS
+import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
 
 const HomePage = React.lazy(() => import("./pages/HomePage/HomePage"));
@@ -15,30 +15,7 @@ const NotFoundPage = React.lazy(() =>
 );
 const history = createBrowserHistory();
 
-async function getTrendingMovies(apiKey) {
-  try {
-    const url = "https://api.themoviedb.org/3/trending/movie/week";
-    const options = {
-      params: {
-        api_key: apiKey,
-      },
-    };
-    const response = await axios.get(url, options);
-    return response.data.results;
-  } catch (error) {
-    console.error("Помилка при завантаженні популярних фільмів:", error);
-    return [];
-  }
-}
-
 function App() {
-  useEffect(() => {
-    const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
-    getTrendingMovies(apiKey).then((movies) => {
-      console.log("Популярні фільми:", movies);
-    });
-  }, []);
-
   return (
     <div>
       <Navigation />
