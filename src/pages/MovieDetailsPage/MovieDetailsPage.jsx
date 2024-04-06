@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { useParams, Routes, Route, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
@@ -10,6 +10,8 @@ function MovieDetailsPage() {
   const [movieDetails, setMovieDetails] = useState(null);
   const [releaseYear, setReleaseYear] = useState("");
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,6 +34,13 @@ function MovieDetailsPage() {
     fetchData();
   }, [movieId]);
 
+  useEffect(() => {
+    // Scroll to top when location changes
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [location]);
+
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
@@ -41,7 +50,7 @@ function MovieDetailsPage() {
   }
 
   return (
-    <div>
+    <div ref={scrollRef}>
       <h1>{movieDetails.title}</h1>
       <img
         src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
