@@ -1,132 +1,93 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  useNavigate,
+  useParams,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import axios from "axios";
+import MovieCast from "../../components/MovieCast/MovieCast";
+import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
 import styles from "./MovieDetailsPage.module.css";
-import MovieReviews from "../../components/MovieReview/MovieReviews";
-import MovieCastPage from "../../components/MovieCast/MovieCast";
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [cast, setCast] = useState([]);
   const [releaseYear, setReleaseYear] = useState("");
-  const [showAllCast, setShowAllCast] = useState(false);
-  const [reviews, setReviews] = useState([]);
-  const [showCast, setShowCast] = useState(false);
-  const [showReviews, setShowReviews] = useState(false);
-  const location = useLocation();
-  const fromRef = useRef(location.state ? location.state.from : null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
-    const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
-    const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
-    const reviewsUrl = `https://api.themoviedb.org/3/movie/${movieId}/reviews`;
-    const options = {
-      params: {
-        api_key: apiKey,
-      },
-    };
-
-    axios
-      .get(movieDetailsUrl, options)
-      .then((response) => {
+    const fetchData = async () => {
+      try {
+        const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
+        const movieDetailsUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
+        const options = {
+          params: {
+            api_key: apiKey,
+          },
+        };
+        const response = await axios.get(movieDetailsUrl, options);
         setMovieDetails(response.data);
         setReleaseYear(response.data.release_date.substring(0, 4));
-      })
-      .catch((error) => {
-        console.error("Error fetching movie details:", error);
-      });
+      } catch (error) {
+        setError(error);
+      }
+    };
 
-    axios
-      .get(castUrl, options)
-      .then((response) => {
-        setCast(response.data.cast);
-      })
-      .catch((error) => {
-        console.error("Error fetching cast:", error);
-      });
-
-    axios
-      .get(reviewsUrl, options)
-      .then((response) => {
-        setReviews(response.data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching reviews:", error);
-      });
+    fetchData();
   }, [movieId]);
 
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
 
-  const toggleShowAllCast = () => {
-    setShowAllCast(!showAllCast);
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const handleCastClick = () => {
+    navigate(`/movies/${movieId}/cast`);
   };
 
-  const toggleShowCast = () => {
-    setShowCast(!showCast);
-  };
-
-  const toggleShowReviews = () => {
-    setShowReviews(!showReviews);
+  const handleReviewsClick = () => {
+    navigate(`/movies/${movieId}/reviews`);
   };
 
   return (
-    <div className={styles["movie-details-container"]}>
-      {fromRef.current && <Link to={fromRef.current}>Back</Link>}
-      <h1>{movieDetails.title}</h1>
-      <img
-        src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-        alt={movieDetails.title}
-        className={styles["movie-poster"]}
-      />
-      <p>{movieDetails.overview}</p>
-      <p>Release Year: {releaseYear}</p>
-      <p>Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}</p>
-      <p>
-        Country:{" "}
-        {movieDetails.production_countries
-          .map((country) => country.name)
-          .join(", ")}
-      </p>
-      <h2>Cast</h2>
-      {showCast && (
-        <ul className={styles["cast-list"]}>
-          {showAllCast
-            ? cast.map((actor) => (
-                <li key={actor.id} className={styles["cast-list-item"]}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                    alt={actor.name}
-                    className={styles["actor-image"]}
-                  />
-                  <p>{actor.name}</p>
-                </li>
-              ))
-            : cast.slice(0, 5).map((actor) => (
-                <li key={actor.id} className={styles["cast-list-item"]}>
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
-                    alt={actor.name}
-                    className={styles["actor-image"]}
-                  />
-                  <p>{actor.name}</p>
-                </li>
-              ))}
-        </ul>
-      )}
-      <Link to={`/movies/${movieId}/cast`} onClick={toggleShowCast}>
-        {showCast ? "Hide Cast" : "Show Cast"}
-      </Link>
-      <h2>Reviews</h2>
-      <div className={styles["reviews"]}>
-        {showReviews && <MovieReviews reviews={reviews} />}
+    <div className={styles.container}>
+      <div className={styles["movie-details"]}>
+        <div>
+          <h1>{movieDetails.title}</h1>
+          <img
+            src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+            alt={movieDetails.title}
+          />
+          <p>{movieDetails.overview}</p>
+          <p>Release Year: {releaseYear}</p>
+          <p className={styles.genre}>
+            Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}
+          </p>
+          <p className={styles.country}>
+            Country:{" "}
+            {movieDetails.production_countries
+              .map((country) => country.name)
+              .join(", ")}
+          </p>
+          <div className={styles.links}>
+            <button onClick={handleCastClick}>View Cast</button>
+            <button onClick={handleReviewsClick}>View Reviews</button>
+          </div>
+        </div>
+        <div>
+          <Routes>
+            <Route path="cast" element={<MovieCast />} />
+            <Route path="reviews" element={<MovieReviewsPage />} />
+          </Routes>
+          <Outlet />
+        </div>
       </div>
-      <Link to={`/movies/${movieId}/reviews`} onClick={toggleShowReviews}>
-        {showReviews ? "Hide Reviews" : "Show Reviews"}
-      </Link>
     </div>
   );
 }

@@ -1,13 +1,21 @@
-/* src/components/MovieReviews/MovieReviews.module.css */
 .container {
-    margin: 20px;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.reviewsList {
+.reviewList {
     list-style: none;
     padding: 0;
 }
 
 .reviewItem {
     margin-bottom: 20px;
+}
+
+.reviewAuthor {
+    font-weight: bold;
+}
+
+.reviewContent {
+    margin-top: 5px;
 }

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function MovieReviewsPage() {
   const { movieId } = useParams();
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [reviews, setReviews] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
@@ -30,12 +31,17 @@ function MovieReviewsPage() {
     fetchReviews();
   }, [movieId]);
 
+  const handleClose = () => {
+    navigate(-1); // Navigate back to the previous page
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       <h2>Movie Reviews</h2>
+      <button onClick={handleClose}>Close</button>
       <ul>
         {reviews.map((review, index) => (
           <li key={index}>

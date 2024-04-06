@@ -1,8 +1,3 @@
-/* src/components/MovieCast/MovieCast.module.css */
-.container {
-    margin: 20px;
-}
-
 .castList {
     list-style: none;
     padding: 0;
@@ -10,4 +5,14 @@
 
 .castItem {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.actorImage {
+    width: 100px;
+    /* Розмір зображення актора */
+    height: auto;
+    /* Розмір зображення актора */
+    margin-right: 10px;
 }

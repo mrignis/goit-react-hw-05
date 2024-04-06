@@ -1,43 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useParams } from "react-router-dom"; // Додайте імпорт useParams
 import styles from "./MovieCast.module.css";
 
-const MovieCast = () => {
-  const { movieId } = useParams(); // Отримання movieId через useParams
-  const [cast, setCast] = useState([]);
+function MovieCast() {
+  const { movieId } = useParams();
+  const navigate = useNavigate();
+  const [cast, setCast] = React.useState([]);
+  const [error, setError] = React.useState(null);
 
-  useEffect(() => {
-    const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
-    const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
-    const options = {
-      params: {
-        api_key: apiKey,
-      },
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
+        const castUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
+        const options = {
+          params: {
+            api_key: apiKey,
+          },
+        };
+        const response = await axios.get(castUrl, options);
+        setCast(response.data.cast);
+      } catch (error) {
+        setError(error);
+      }
     };
 
-    axios
-      .get(castUrl, options)
-      .then((response) => {
-        setCast(response.data.cast);
-      })
-      .catch((error) => {
-        console.error("Error fetching cast:", error);
-      });
+    fetchData();
   }, [movieId]);
 
+  const handleClose = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className={styles.container}>
+    <div>
       <h2>Movie Cast</h2>
+      <button onClick={handleClose}>Close</button>
       <ul className={styles.castList}>
         {cast.map((actor) => (
           <li key={actor.id} className={styles.castItem}>
-            {actor.name} as {actor.character}
+            <img
+              src={`https://image.tmdb.org/t/p/w500/${actor.profile_path}`}
+              alt={actor.name}
+              className={styles.actorImage}
+            />
+            <div className={styles.actorInfo}>
+              <p>{actor.name}</p>
+              <p>as {actor.character}</p>
+            </div>
           </li>
         ))}
       </ul>
     </div>
   );
-};
+}
 
 export default MovieCast;

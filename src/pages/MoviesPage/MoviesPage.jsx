@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
-import styles from "./MoviesPage.module.css"; // Імпорт CSS файлу
-import { useSearchParams } from "react-router-dom";
+import styles from "./MoviesPage.module.css";
+import { useNavigate } from "react-router-dom";
 
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,7 +10,34 @@ function MoviesPage() {
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const searchMovies = async (query) => {
+    setIsLoading(true);
+    try {
+      const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
+      const searchUrl = `https://api.themoviedb.org/3/search/movie`;
+      const options = {
+        params: {
+          api_key: apiKey,
+          query: query,
+        },
+      };
+      const response = await axios.get(searchUrl, options);
+      setSearchResults(response.data.results);
+      setIsLoading(false);
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("query") || "";
+    setSearchQuery(query);
+    searchMovies(query);
+  }, []);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
@@ -35,46 +62,14 @@ function MoviesPage() {
     fetchTrendingMovies();
   }, []);
 
-  useEffect(() => {
-    const searchMovies = async () => {
-      setIsLoading(true);
-      try {
-        const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
-        const searchUrl = `https://api.themoviedb.org/3/search/movie`;
-        const options = {
-          params: {
-            api_key: apiKey,
-            query: searchQuery,
-          },
-        };
-        const response = await axios.get(searchUrl, options);
-        setSearchResults(response.data.results);
-        setIsLoading(false);
-      } catch (error) {
-        setError(error);
-        setIsLoading(false);
-      }
-    };
-
-    if (searchQuery) {
-      searchMovies();
-    }
-  }, [searchQuery]);
-
-  useEffect(() => {
-    const query = searchParams.get("query");
-    if (query) {
-      setSearchQuery(query);
-    }
-  }, [searchParams]);
-
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    window.history.pushState({}, "", `?query=${searchQuery}`);
+    navigate(`?query=${searchQuery}`);
+    searchMovies(searchQuery);
   };
 
   if (isLoading) {

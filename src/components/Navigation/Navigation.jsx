@@ -1,18 +1,18 @@
 import React from "react";
-import { NavLink } from "react-router-dom"; // Заміна Link на NavLink
-import styles from "./Navigation.module.css"; // Підключаємо стилі
+import { NavLink } from "react-router-dom";
+import styles from "./Navigation.module.css";
 
 function Navigation() {
   return (
     <nav className={styles.navigation}>
       <ul className={styles.navigationList}>
         <li className={styles.navigationItem}>
-          <NavLink exact to="/" className={styles.link} activeClassName={styles.active}>
+          <NavLink exact="true" to="/" className={styles.link}>
             Home
           </NavLink>
         </li>
         <li className={styles.navigationItem}>
-          <NavLink to="/movies" className={styles.link} activeClassName={styles.active}>
+          <NavLink to="/movies" className={styles.link}>
             Movies
           </NavLink>
         </li>

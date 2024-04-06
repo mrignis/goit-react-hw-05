@@ -1,33 +1,33 @@
-.movie-details-container {
+.container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
 }
 
-.movie-poster {
-  width: 200px;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.cast-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.cast-list-item {
+.movie-details {
   display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-.actor-image {
-  width: 70px;
-  height: auto;
-  border-radius: 10%;
+.links {
+  display: flex;
+}
+
+.links>* {
+  text-decoration: none;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
   margin-right: 10px;
+}
+
+.links>*:last-child {
+  margin-right: 0;
+}
+
+.links>*:hover {
+  background-color: #333;
+  color: #fff;
 }
