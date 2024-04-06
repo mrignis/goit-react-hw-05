@@ -1,5 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useParams, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  useParams,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
@@ -12,6 +19,7 @@ function MovieDetailsPage() {
   const [error, setError] = useState(null);
   const location = useLocation();
   const scrollRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +49,10 @@ function MovieDetailsPage() {
     }
   }, [location]);
 
+  const handleGoBack = () => {
+    navigate(-1); // Go back to previous page
+  };
+
   if (!movieDetails) {
     return <div>Loading...</div>;
   }
@@ -50,35 +62,44 @@ function MovieDetailsPage() {
   }
 
   return (
-    <div ref={scrollRef}>
-      <h1>{movieDetails.title}</h1>
-      <img
-        src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-        alt={movieDetails.title}
-      />
-      <p>{movieDetails.overview}</p>
-      <p>Release Year: {releaseYear}</p>
-      <p>Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}</p>
-      <p>
-        Country:{" "}
-        {movieDetails.production_countries
-          .map((country) => country.name)
-          .join(", ")}
-      </p>
-
-      <div className={styles["button-group"]}>
-        <Link to={`/movies/${movieId}/cast`} className={styles.linkss}>
-          View Cast
-        </Link>
-        <Link to={`/movies/${movieId}/reviews`} className={styles.linkss}>
-          View Reviews
-        </Link>
+    <div>
+      <div className={styles["button-group-top"]}>
+        <button onClick={handleGoBack} className={styles.linkss}>
+          Go Back
+        </button>
       </div>
+      <div ref={scrollRef}>
+        <h1>{movieDetails.title}</h1>
+        <img
+          src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+          alt={movieDetails.title}
+        />
+        <p>{movieDetails.overview}</p>
+        <p>Release Year: {releaseYear}</p>
+        <p>
+          Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}
+        </p>
+        <p>
+          Country:{" "}
+          {movieDetails.production_countries
+            .map((country) => country.name)
+            .join(", ")}
+        </p>
 
-      <Routes>
-        <Route path="/cast" element={<MovieCast />} />
-        <Route path="/reviews" element={<MovieReviewsPage />} />
-      </Routes>
+        <div className={styles["button-group"]}>
+          <Link to={`/movies/${movieId}/cast`} className={styles.linkss}>
+            View Cast
+          </Link>
+          <Link to={`/movies/${movieId}/reviews`} className={styles.linkss}>
+            View Reviews
+          </Link>
+        </div>
+
+        <Routes>
+          <Route path="/cast" element={<MovieCast />} />
+          <Route path="/reviews" element={<MovieReviewsPage />} />
+        </Routes>
+      </div>
     </div>
   );
 }

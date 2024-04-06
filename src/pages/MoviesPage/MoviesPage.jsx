@@ -3,22 +3,19 @@ import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
 import styles from "./MoviesPage.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
-// Імпортуйте компонент лоудера
 import { LineWave } from "react-loader-spinner";
 
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [trendingMovies, setTrendingMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // Додайте стан isLoading
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
 
   const searchMovies = async (query) => {
-    setIsLoading(true); // Початок завантаження даних
+    setIsLoading(true);
     try {
       const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
       const searchUrl = `https://api.themoviedb.org/3/search/movie`;
@@ -33,7 +30,7 @@ function MoviesPage() {
     } catch (error) {
       setError(error);
     } finally {
-      setIsLoading(false); // Завершення завантаження даних
+      setIsLoading(false);
     }
   };
 
@@ -44,29 +41,6 @@ function MoviesPage() {
     }
   }, [query]);
 
-  useEffect(() => {
-    const fetchTrendingMovies = async () => {
-      setIsLoading(true); // Початок завантаження даних
-      try {
-        const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
-        const trendingUrl = `https://api.themoviedb.org/3/trending/movie/week`;
-        const trendingOptions = {
-          params: {
-            api_key: apiKey,
-          },
-        };
-        const response = await axios.get(trendingUrl, trendingOptions);
-        setTrendingMovies(response.data.results);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false); // Завершення завантаження даних
-      }
-    };
-
-    fetchTrendingMovies();
-  }, []);
-
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
   };
@@ -76,7 +50,6 @@ function MoviesPage() {
     navigate(`?query=${searchQuery}`);
   };
 
-  // Відображення лоудера, якщо завантажуються дані
   if (isLoading) {
     return (
       <div className={styles.loaderContainer}>
@@ -115,8 +88,6 @@ function MoviesPage() {
           <MovieList movies={searchResults} />
         </>
       )}
-      <h2>Trending Movies</h2>
-      <MovieList movies={trendingMovies} />
     </div>
   );
 }
