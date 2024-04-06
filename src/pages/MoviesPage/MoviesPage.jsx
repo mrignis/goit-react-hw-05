@@ -4,18 +4,21 @@ import axios from "axios";
 import styles from "./MoviesPage.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
+// Імпортуйте компонент лоудера
+import { LineWave } from "react-loader-spinner";
+
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Додайте стан isLoading
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
 
   const searchMovies = async (query) => {
-    setIsLoading(true);
+    setIsLoading(true); // Початок завантаження даних
     try {
       const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
       const searchUrl = `https://api.themoviedb.org/3/search/movie`;
@@ -27,21 +30,23 @@ function MoviesPage() {
       };
       const response = await axios.get(searchUrl, options);
       setSearchResults(response.data.results);
-      setIsLoading(false);
     } catch (error) {
       setError(error);
-      setIsLoading(false);
+    } finally {
+      setIsLoading(false); // Завершення завантаження даних
     }
   };
 
   useEffect(() => {
     setSearchQuery(query);
-    searchMovies(query);
+    if (query !== "") {
+      searchMovies(query);
+    }
   }, [query]);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {
-      setIsLoading(true);
+      setIsLoading(true); // Початок завантаження даних
       try {
         const apiKey = "f81eddcfa1fa92ba0e5bfe802029fb78";
         const trendingUrl = `https://api.themoviedb.org/3/trending/movie/week`;
@@ -52,10 +57,10 @@ function MoviesPage() {
         };
         const response = await axios.get(trendingUrl, trendingOptions);
         setTrendingMovies(response.data.results);
-        setIsLoading(false);
       } catch (error) {
         setError(error);
-        setIsLoading(false);
+      } finally {
+        setIsLoading(false); // Завершення завантаження даних
       }
     };
 
@@ -69,11 +74,21 @@ function MoviesPage() {
   const handleSearchSubmit = (event) => {
     event.preventDefault();
     navigate(`?query=${searchQuery}`);
-    searchMovies(searchQuery);
   };
 
+  // Відображення лоудера, якщо завантажуються дані
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.loaderContainer}>
+        <LineWave
+          visible={true}
+          height={100}
+          width={100}
+          color="#4fa94d"
+          ariaLabel="line-wave-loading"
+        />
+      </div>
+    );
   }
 
   if (error) {
@@ -94,9 +109,14 @@ function MoviesPage() {
           Search
         </button>
       </form>
-      {searchResults.length > 0 && <MovieList movies={searchResults} />}
+      {searchQuery !== "" && searchResults.length > 0 && (
+        <>
+          <h2>Search Results</h2>
+          <MovieList movies={searchResults} />
+        </>
+      )}
       <h2>Trending Movies</h2>
-      {trendingMovies.length > 0 && <MovieList movies={trendingMovies} />}
+      <MovieList movies={trendingMovies} />
     </div>
   );
 }
