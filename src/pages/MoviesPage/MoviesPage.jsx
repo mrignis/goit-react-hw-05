@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
 import styles from "./MoviesPage.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function MoviesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,6 +11,8 @@ function MoviesPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query") || "";
 
   const searchMovies = async (query) => {
     setIsLoading(true);
@@ -33,11 +35,9 @@ function MoviesPage() {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("query") || "";
     setSearchQuery(query);
     searchMovies(query);
-  }, []);
+  }, [query]);
 
   useEffect(() => {
     const fetchTrendingMovies = async () => {

@@ -3,8 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
-import MovieCast from "./components/MovieCast/MovieCast";
-import MovieReviewsPage from "./components/MovieReview/MovieReviews";
 
 const HomePage = React.lazy(() => import("./pages/HomePage/HomePage"));
 const MoviesPage = React.lazy(() => import("./pages/MoviesPage/MoviesPage"));
@@ -24,16 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/movies" element={<MoviesPage />} />
-          <Route
-            path="/movies/:movieId/*"
-            element={<MovieDetailsPage />}
-          />{" "}
-          {/* Змінено шлях для відображення деталей фільму */}
-          <Route path="/movies/:movieId/cast" element={<MovieCast />} />
-          <Route
-            path="/movies/:movieId/reviews"
-            element={<MovieReviewsPage />}
-          />
+          <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

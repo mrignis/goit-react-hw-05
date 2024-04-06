@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from "react";
-import {
-  useNavigate,
-  useParams,
-  Routes,
-  Route,
-  Outlet,
-} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, Routes, Route, Link } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
-import styles from "./MovieDetailsPage.module.css";
+import styles from "./MovieDetailsPage.module.css"; // Імпортуйте модульні стилі
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
   const [releaseYear, setReleaseYear] = useState("");
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,47 +40,36 @@ function MovieDetailsPage() {
     return <div>Error: {error.message}</div>;
   }
 
-  const handleCastClick = () => {
-    navigate(`/movies/${movieId}/cast`);
-  };
-
-  const handleReviewsClick = () => {
-    navigate(`/movies/${movieId}/reviews`);
-  };
-
   return (
-    <div className={styles.container}>
-      <div className={styles["movie-details"]}>
-        <div>
-          <h1>{movieDetails.title}</h1>
-          <img
-            src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
-            alt={movieDetails.title}
-          />
-          <p>{movieDetails.overview}</p>
-          <p>Release Year: {releaseYear}</p>
-          <p className={styles.genre}>
-            Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}
-          </p>
-          <p className={styles.country}>
-            Country:{" "}
-            {movieDetails.production_countries
-              .map((country) => country.name)
-              .join(", ")}
-          </p>
-          <div className={styles.links}>
-            <button onClick={handleCastClick}>View Cast</button>
-            <button onClick={handleReviewsClick}>View Reviews</button>
-          </div>
-        </div>
-        <div>
-          <Routes>
-            <Route path="cast" element={<MovieCast />} />
-            <Route path="reviews" element={<MovieReviewsPage />} />
-          </Routes>
-          <Outlet />
-        </div>
+    <div>
+      <h1>{movieDetails.title}</h1>
+      <img
+        src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
+        alt={movieDetails.title}
+      />
+      <p>{movieDetails.overview}</p>
+      <p>Release Year: {releaseYear}</p>
+      <p>Genre: {movieDetails.genres.map((genre) => genre.name).join(", ")}</p>
+      <p>
+        Country:{" "}
+        {movieDetails.production_countries
+          .map((country) => country.name)
+          .join(", ")}
+      </p>
+
+      <div className={styles["button-group"]}>
+        <Link to={`/movies/${movieId}/cast`} className={styles.linkss}>
+          View Cast
+        </Link>
+        <Link to={`/movies/${movieId}/reviews`} className={styles.linkss}>
+          View Reviews
+        </Link>
       </div>
+
+      <Routes>
+        <Route path="/cast" element={<MovieCast />} />
+        <Route path="/reviews" element={<MovieReviewsPage />} />
+      </Routes>
     </div>
   );
 }

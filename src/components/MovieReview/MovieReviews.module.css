@@ -1,8 +1,3 @@
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .reviewList {
     list-style: none;
     padding: 0;
@@ -12,10 +7,10 @@
     margin-bottom: 20px;
 }
 
-.reviewAuthor {
-    font-weight: bold;
+.reviewItem h3 {
+    margin-bottom: 5px;
 }
 
-.reviewContent {
-    margin-top: 5px;
+.reviewItem p {
+    margin: 0;
 }

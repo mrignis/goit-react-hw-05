@@ -4,15 +4,27 @@
 }
 
 .castItem {
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .actorImage {
     width: 100px;
-    /* Розмір зображення актора */
-    height: auto;
-    /* Розмір зображення актора */
-    margin-right: 10px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.actorInfo {
+    flex-grow: 1;
+}
+
+.actorInfo p {
+    margin: 0;
+}
+
+.actorInfo p:first-child {
+    font-weight: bold;
 }
