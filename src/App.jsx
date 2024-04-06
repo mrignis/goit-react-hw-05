@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
+import { LineWave } from "react-loader-spinner";
 
 const HomePage = React.lazy(() => import("./pages/HomePage/HomePage"));
 const MoviesPage = React.lazy(() => import("./pages/MoviesPage/MoviesPage"));
@@ -18,7 +19,22 @@ function App() {
   return (
     <div>
       <Navigation />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <LineWave
+            visible={true}
+            height="100"
+            width="100"
+            color="#4fa94d"
+            ariaLabel="line-wave-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            firstLineColor=""
+            middleLineColor=""
+            lastLineColor=""
+          />
+        }
+      >
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/movies" element={<MoviesPage />} />
