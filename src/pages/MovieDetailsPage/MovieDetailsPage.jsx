@@ -3,7 +3,7 @@ import { useParams, Routes, Route, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
-import styles from "./MovieDetailsPage.module.css"; // Імпортуйте модульні стилі
+import styles from "./MovieDetailsPage.module.css";
 
 function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -11,7 +11,7 @@ function MovieDetailsPage() {
   const [releaseYear, setReleaseYear] = useState("");
   const [error, setError] = useState(null);
   const location = useLocation();
-  const prevLocationRef = useRef(null);
+  const prevLocationRef = useRef(location.state || "/");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,14 +36,12 @@ function MovieDetailsPage() {
 
   useEffect(() => {
     // Save previous location
-    prevLocationRef.current = location;
+    prevLocationRef.current = location.state || "/";
   }, [location]);
 
   const handleGoBack = () => {
     // Navigate back to previous location
-    if (prevLocationRef.current) {
-      window.history.back();
-    }
+    window.history.back();
   };
 
   if (!movieDetails) {

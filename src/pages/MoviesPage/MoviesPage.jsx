@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import axios from "axios";
 import styles from "./MoviesPage.module.css";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { LineWave } from "react-loader-spinner";
 
 function MoviesPage() {
@@ -10,8 +10,7 @@ function MoviesPage() {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
 
   const searchMovies = async (query) => {
@@ -47,7 +46,8 @@ function MoviesPage() {
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    navigate(`?query=${searchQuery}`);
+    // Set search query as URL parameter
+    setSearchParams({ query: searchQuery });
   };
 
   if (isLoading) {
