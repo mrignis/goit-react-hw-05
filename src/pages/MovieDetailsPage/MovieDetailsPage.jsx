@@ -1,12 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  useParams,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, Routes, Route, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviewsPage from "../../components/MovieReview/MovieReviews";
@@ -18,8 +11,7 @@ function MovieDetailsPage() {
   const [releaseYear, setReleaseYear] = useState("");
   const [error, setError] = useState(null);
   const location = useLocation();
-  const scrollRef = useRef(null);
-  const navigate = useNavigate();
+  const prevLocationRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,14 +35,15 @@ function MovieDetailsPage() {
   }, [movieId]);
 
   useEffect(() => {
-    // Scroll to top when location changes
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    // Save previous location
+    prevLocationRef.current = location;
   }, [location]);
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to previous page
+    // Navigate back to previous location
+    if (prevLocationRef.current) {
+      window.history.back();
+    }
   };
 
   if (!movieDetails) {
@@ -68,7 +61,7 @@ function MovieDetailsPage() {
           Go Back
         </button>
       </div>
-      <div ref={scrollRef}>
+      <div>
         <h1>{movieDetails.title}</h1>
         <img
           src={`https://image.tmdb.org/t/p/w500/${movieDetails.poster_path}`}
